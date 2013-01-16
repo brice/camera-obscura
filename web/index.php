@@ -7,8 +7,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
+
+// Set to debug  for now
 $app['debug'] = true;
-$config = array('email', 'Your email');
+
+// Temporary config file
+$config = array(
+    'email' => 'Your email'
+);
+
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'    => 'pdo_mysql',
+        'host'      => 'localhost',
+        'dbname'    => 'test',
+        'user'      => 'root',
+        'password'  => 'password',
+        'charset'   => 'utf8',
+    ),
+));
+
 
 $app->get('/', function() use ($app) {
     return 'Welcome to my new website';
