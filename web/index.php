@@ -5,8 +5,16 @@ require_once  __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Silex\Provider\FormServiceProvider;
 
 $app = new Silex\Application();
+
+// Register Twig service provider
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/views',
+));
+// Register form service provider
+$app->register(new FormServiceProvider());
 
 // Set to debug  for now
 $app['debug'] = true;
@@ -28,8 +36,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 
+// Home page of the website
 $app->get('/', function() use ($app) {
-    return 'Welcome to my new website';
+    return $app['twig']->render('home.twig');
 });
 
 $app->mount('/news', include 'news.php');
