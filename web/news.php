@@ -17,9 +17,7 @@ $news->get('/', function() use ($app) {
 });
 
 $news->get('/{id}', function(Silex\Application $app, $id) use ($newsData) {
-
     $sql = "SELECT * FROM news WHERE id = ?";
-
     $news = $app['db']->fetchAssoc($sql, array((int) $id));
     $output = '<h1>'.$news['title'].'</h1><p>'.$news['content'].'</p>';
     $views = (int)$news['views'];
@@ -27,6 +25,27 @@ $news->get('/{id}', function(Silex\Application $app, $id) use ($newsData) {
     $app['db']->executeUpdate($sql, array(++$views, (int) $id));
 
     return $output;
+});
+
+
+$news->match('/post', function (Request $request) use ($app) {
+    $form = $app['form.factory']->createBuilder('form', $data)
+        ->add('title')
+        ->add('content')
+        ->add('link')
+        ->getForm();
+
+    if ('POST' == $request->getMethod()) {
+        $form->bind($request);
+        if ($form->isValid()) {
+            $data
+        }
+    }
+
+});
+
+$news->get('/post/confirm', function() use ($app) {
+    return $app['twig']->render('news/confirm.twig');
 });
 
 return $news;
