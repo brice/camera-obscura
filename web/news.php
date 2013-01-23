@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 $news = $app['controllers_factory'];
 $newsData = array(
     'news_id' => array('id'=> 'news_id', 'title'=> 'Title of the news')
@@ -16,6 +18,32 @@ $news->get('/', function() use ($app) {
     return $output;
 });
 
+
+$news->match('/post', function (Request $request) use ($app) {
+    // No default Data
+    $data = array();
+    $form = $app['form.factory']->createBuilder('form', $data)
+        ->add('title')
+        ->add('content')
+        ->add('link')
+        ->getForm();
+
+    if ('POST' == $request->getMethod()) {
+        $form->bind($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $app['db']->insert('news', $data);
+            return ($app->redirect('/news/post/confirm'));
+        }
+    }
+
+    return $app['twig']->render('news/form.twig', array('form'=>$form->createView()));
+});
+
+$news->get('/post/confirm', function() use ($app) {
+    return $app['twig']->render('news/confirm.twig');
+});
+
 $news->get('/{id}', function(Silex\Application $app, $id) use ($newsData) {
     $sql = "SELECT * FROM news WHERE id = ?";
     $news = $app['db']->fetchAssoc($sql, array((int) $id));
@@ -28,25 +56,6 @@ $news->get('/{id}', function(Silex\Application $app, $id) use ($newsData) {
 });
 
 
-$news->match('/post', function (Request $request) use ($app) {
-    $form = $app['form.factory']->createBuilder('form', $data)
-        ->add('title')
-        ->add('content')
-        ->add('link')
-        ->getForm();
-
-    if ('POST' == $request->getMethod()) {
-        $form->bind($request);
-        if ($form->isValid()) {
-            $data
-        }
-    }
-
-});
-
-$news->get('/post/confirm', function() use ($app) {
-    return $app['twig']->render('news/confirm.twig');
-});
 
 return $news;
 
