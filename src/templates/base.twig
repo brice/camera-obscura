@@ -2,8 +2,8 @@
 <html>
     <head>
         {% block head %}
-            <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" />
-            <link rel="stylesheet" href="css/bootstrap-responsive.min.css" media="screen" />
+            <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" />
+            <link rel="stylesheet" href="/css/bootstrap-responsive.min.css" media="screen" />
             <title>{% block title %}{% endblock %} - Camera Obscura News </title>
         {% endblock %}
     </head>
@@ -25,12 +25,11 @@
                 <div id="content">{% block content %}{% endblock %}</div>
                 </div>
             </div>
-        </div>
         <footer>
-            {% block footer %}
+            <p>{% block footer %}
                 &copy; Copyright 2013 by <a href="http://pelmel.org/">Brice Favre - Pelmel.org</a>.
-            {% endblock %}
-        <div id="ads">
+            {% endblock %}</p>
+        <p>
 <script type="text/javascript">
 <!--
 google_ad_client = "ca-pub-5595836108149450";
@@ -44,11 +43,12 @@ google_ad_height = 15;
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
-        </div>
+        </p>
     
         </footer>
+        </div>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
     </body>
 </html>
 
