@@ -10,6 +10,11 @@ use Silex\Provider\FormServiceProvider;
 $app = new Silex\Application();
 
 // Register Twig service provider
+$path = array(__DIR__.'/templates');
+if (file_exists(__DIR.'/templates/sites/'.$_REQUEST['host'])); {
+   $path[] ==  __DIR.'/templates/sites/'.$_REQUEST['host'];
+}
+
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/templates',
 ));
