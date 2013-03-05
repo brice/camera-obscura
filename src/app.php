@@ -10,18 +10,21 @@ use Silex\Provider\FormServiceProvider;
 $app = new Silex\Application();
 
 // Register Twig service provider
+
+// Setup multiple path depends on Website URL
 $path = array(__DIR__.'/templates');
 if (file_exists(__DIR.'/templates/sites/'.$_REQUEST['host'])); {
    $path[] ==  __DIR.'/templates/sites/'.$_REQUEST['host'];
 }
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/templates',
+    'twig.path' => $path,
 ));
 
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'translator.messages' => array(),
 ));
+
 // Register form service provider
 $app->register(new FormServiceProvider());
 
@@ -52,11 +55,24 @@ $app->get('/', function() use ($app) {
 
 $app->mount('/news', include 'news.php');
 
-$app->get('/contact', function() use($app) {
-    $output = '<form method="post" action="/contact"><label for="message">Send me a message</label><input type="text" name="message" id="message"><input type="submit"></form>';
-    return $output;
+$app->mount('/portfolio', include 'portfolio.php');
+
+$app->mount('/admin', include 'admin.php');
+
+// Display signin cwand login form
+$app->get('/signin', function() {
+    return $app['twig']->render('signin.twig');
 });
 
+// Create an account
+$app->post('/signup', function() { });
+
+// Log user
+$app->post('/login', function() { });
+
+$app->get('/contact', function() use($app) {
+    return $app['twig']->render('contact.twig');
+});
 
 $app->post('/contact', function(Request $request) use($config) {
     $message = $request->get('message');
@@ -65,4 +81,3 @@ $app->post('/contact', function(Request $request) use($config) {
 });
 
 return $app;
-

@@ -51,11 +51,8 @@ $news->get('/{id}', function(Silex\Application $app, $id) use ($newsData) {
     $views = (int)$news['views'];
     $sql = "UPDATE news SET views = ? WHERE id = ?";
     $app['db']->executeUpdate($sql, array(++$views, (int) $id));
-
     return $output;
 });
-
-
 
 return $news;
 

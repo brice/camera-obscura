@@ -9,7 +9,6 @@ It will bring some useful features like :
 * Creating a shop
 * Publish information on social networks
 
-
 The first website will use Shutterbook is http://beta.obscura.fr/
 
 This application is developped with Silex framework and Twitter Bootstrap
